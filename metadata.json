@@ -1,0 +1,6 @@
+{
+  "name": "Termux Video Downloader Pro",
+  "description": "A high-performance full-stack video and audio downloader inspired by Termux downloaders. Supports multi-format quality options, proxy pools, cookie uploads, real-time downloading cues, and direct in-app media playing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
