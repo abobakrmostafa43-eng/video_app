@@ -7,10 +7,12 @@ services:
     startCommand: node dist/server.cjs
     envVars:
       - key: GEMINI_API_KEY
-        sync: false # Set this value in the Render dashboard
+        sync: false
       - key: PORT
         value: 3000
+      - key: RENDER_DISK_MOUNT_PATH
+        value: /opt/render/project/src/downloads_persistent
     disks:
       - name: downloads-data
-        path: /opt/render/project/src/downloads
-
+        mountPath: /opt/render/project/src/downloads_persistent
+        sizeGB: 1
