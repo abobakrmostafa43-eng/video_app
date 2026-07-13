@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: video-app
+    env: node
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: node dist/server.cjs
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false # Set this value in the Render dashboard
+      - key: PORT
+        value: 3000
+    disks:
+      - name: downloads-data
+        path: /opt/render/project/src/downloads
+
