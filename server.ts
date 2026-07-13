@@ -1,4 +1,4 @@
-import express from "express";
+heremport express from "express";
 import path from "path";
 import fs from "fs";
 import { spawn } from "child_process";
@@ -9,12 +9,17 @@ import { AppSettings, DownloadJob, DownloadedFile, QUALITY_OPTIONS } from "./src
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const DOWNLOADS_DIR = path.join(process.cwd(), 'downloads');
-const YTDLP_PATH = path.join(process.cwd(), 'yt-dlp');
+// In Render, we should use a persistent disk or /tmp for writing
+const DOWNLOADS_DIR = process.env.RENDER_DISK_MOUNT_PATH 
+  ? path.join(process.env.RENDER_DISK_MOUNT_PATH) 
+  : path.join(process.cwd(), 'downloads');
+
+// yt-dlp path: try to use /tmp if we can't write to the project root
+const YTDLP_PATH = process.env.RENDER ? path.join('/tmp', 'yt-dlp') : path.join(process.cwd(), 'yt-dlp');
 const CONFIG_PATH = path.join(DOWNLOADS_DIR, 'config.json');
 
 // Ensure downloads directory exists
@@ -66,7 +71,7 @@ function saveSettings(settings: AppSettings) {
 // Download Yt-Dlp if not exists
 async function ensureYtDlp() {
   if (!fs.existsSync(YTDLP_PATH)) {
-    console.log("yt-dlp not found. Downloading standalone binary...");
+    console.log(`yt-dlp not found at ${YTDLP_PATH}. Downloading standalone binary...`);
     const url = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp";
     try {
       const { execSync } = await import("child_process");
